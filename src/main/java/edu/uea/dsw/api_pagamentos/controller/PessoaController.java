@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import edu.uea.dsw.api_pagamentos.dto.PessoaDTO;
 import edu.uea.dsw.api_pagamentos.service.PessoaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -33,14 +34,14 @@ public class PessoaController {
 
     // POST /pessoas
     @PostMapping
-    public ResponseEntity<PessoaDTO> criarPessoa(@RequestBody PessoaDTO pessoaDTO) {
+    public ResponseEntity<PessoaDTO> criarPessoa(@Valid @RequestBody PessoaDTO pessoaDTO) {
         PessoaDTO pessoaCriada = pessoaService.criarPessoa(pessoaDTO);
         return new ResponseEntity<>(pessoaCriada, HttpStatus.CREATED);
     }
 
     // PUT /pessoas/{codigo}
     @PutMapping("/{codigo}")
-    public PessoaDTO atualizarPessoa(@PathVariable Long codigo, @RequestBody PessoaDTO pessoaDTO) {
+    public PessoaDTO atualizarPessoa(@Valid @PathVariable Long codigo, @RequestBody PessoaDTO pessoaDTO) {
         return pessoaService.atualizarPessoa(codigo, pessoaDTO);
     }
 

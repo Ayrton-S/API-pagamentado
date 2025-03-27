@@ -52,12 +52,7 @@ public class LancamentoService {
         dto.setObservacao(lancamento.getObservacao());
         dto.setTipo(lancamento.getTipo());
         dto.setCategoria(lancamento.getCategoria());
-        if (lancamento.getPessoa() != null) {
-            PessoaDTO pessoaDTO = new PessoaDTO();
-            pessoaDTO.setCodigo(lancamento.getPessoa().getCodigo());
-            pessoaDTO.setNome(lancamento.getPessoa().getNome());
-            dto.setPessoa(pessoaDTO);
-        }
+        dto.setPessoa(lancamento.getPessoa());
         return dto;
     }
 
@@ -72,12 +67,7 @@ public class LancamentoService {
         lancamento.setObservacao(dto.getObservacao());
         lancamento.setTipo(dto.getTipo());
         lancamento.setCategoria(dto.getCategoria());
-        if (dto.getPessoa() != null) {
-            Pessoa pessoa = new Pessoa();
-            pessoa.setCodigo(dto.getPessoa().getCodigo());
-            pessoa.setNome(dto.getPessoa().getNome());
-            lancamento.setPessoa(pessoa);
-        }
+        lancamento.setPessoa(dto.getPessoa());
         return lancamento;
     }
 
