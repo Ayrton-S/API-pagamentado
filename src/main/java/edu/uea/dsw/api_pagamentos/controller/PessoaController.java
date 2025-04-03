@@ -4,10 +4,12 @@ package edu.uea.dsw.api_pagamentos.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import edu.uea.dsw.api_pagamentos.dto.PessoaDTO;
 import edu.uea.dsw.api_pagamentos.service.PessoaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -21,31 +23,36 @@ public class PessoaController {
 
     // GET /pessoas
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public List<PessoaDTO> listarPessoas() {
         return pessoaService.listarPessoas();
     }
 
     // GET /pessoas/{codigo}
     @GetMapping("/{codigo}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public PessoaDTO buscarPessoa(@PathVariable Long codigo) {
         return pessoaService.buscarPessoaPorCodigo(codigo);
     }
 
     // POST /pessoas
     @PostMapping
-    public ResponseEntity<PessoaDTO> criarPessoa(@RequestBody PessoaDTO pessoaDTO) {
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<PessoaDTO> criarPessoa(@Valid @RequestBody PessoaDTO pessoaDTO) {
         PessoaDTO pessoaCriada = pessoaService.criarPessoa(pessoaDTO);
         return new ResponseEntity<>(pessoaCriada, HttpStatus.CREATED);
     }
 
     // PUT /pessoas/{codigo}
     @PutMapping("/{codigo}")
-    public PessoaDTO atualizarPessoa(@PathVariable Long codigo, @RequestBody PessoaDTO pessoaDTO) {
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public PessoaDTO atualizarPessoa(@Valid @PathVariable Long codigo, @RequestBody PessoaDTO pessoaDTO) {
         return pessoaService.atualizarPessoa(codigo, pessoaDTO);
     }
 
     // DELETE /pessoas/{codigo}
     @DeleteMapping("/{codigo}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletarPessoa(@PathVariable Long codigo) {
         pessoaService.deletarPessoa(codigo);
         return ResponseEntity.noContent().build();
@@ -53,6 +60,7 @@ public class PessoaController {
 
     // PATCH /pessoas/{codigo}/ativo
     @PatchMapping("/{codigo}/ativo")
+    @PreAuthorize("hasRole('ADMIN')")
     public PessoaDTO atualizarStatus(@PathVariable Long codigo, @RequestBody Boolean ativo) {
         return pessoaService.atualizarStatus(codigo, ativo);
     }
